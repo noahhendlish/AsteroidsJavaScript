@@ -6,7 +6,7 @@ function MovingObject(options){
     this.vel = options.vel;
     this.radius = options.radius;
     this.color = options.color;
-    //this.game = options.game;
+    this.game = options.game;
 }
 
 MovingObject.prototype.draw = function(ctx){
@@ -22,10 +22,16 @@ MovingObject.prototype.draw = function(ctx){
             );
         ctx.fill();
 };
+const NORMAL_FRAME_TIME_DELTA = 1000/60;
 
-MovingObject.prototype.move = function(){
-    this.pos[0] += this.vel[0];
-    this.pos[1] += this.vel[1];
-    //this.pos = this.game.wrap(this.pos);
+MovingObject.prototype.move = function(timeDelta = (1000/60)){
+    const velocityScale = 1;//timeDelta / NORMAL_FRAME_TIME_DELTA;
+    const offsetX = this.vel[0]*velocityScale;
+    const offsetY = this.vel[1]*velocityScale;
+    this.pos = [ this.pos[0] + offsetX, this.pos[1] + offsetY];
+    if(this.game.isOutOfBounds(this.pos)){
+        this.pos = this.game.wrap(this.pos);
+    }
 }
+
 module.exports = MovingObject;

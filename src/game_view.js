@@ -13,7 +13,7 @@ GameView.prototype.start = function(){
     setInterval(function(){
         that.game.draw(that.ctx);
         that.game.moveObjects();
-    }, 20);
+    }, 10);
 };
 
 module.exports = GameView;

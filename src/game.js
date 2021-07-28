@@ -1,5 +1,6 @@
 const Asteroid = require("./asteroid");
 const MovingObject = require('./moving_object');
+const Utils = require('./utils');
 
 function Game(asteroids, ship){
     this.asteroids = asteroids || [];
@@ -13,15 +14,16 @@ Game.prototype.randomPosition = function(radius){
 };
 
 Game.prototype.addAsteroid = function(){
-    let a = new Asteroid({game: this});
+    let game = this;
+    let a = new Asteroid({game: game});
     this.asteroids.push(a);
-}
+};
 
 Game.prototype.addAsteroids = function addAsteroids(){
     for(let i = 0; i < Game.NUM_ASTEROIDS; i++){
         this.addAsteroid();
     }
-    return this.asteroids;
+    //return this.asteroids;
 };
 
 Game.prototype.draw = function(ctx){
@@ -31,22 +33,47 @@ Game.prototype.draw = function(ctx){
 
 Game.prototype.moveObjects = function(){
     this.asteroids.forEach((a)=> a.move());
-}
+};
 
-Game.prototype.wrap = function(pos){
-    if(pos[0] <= 0){
-        pos[0] = Game.DIM_X;
+Game.prototype.wrap2 = function wrap(pos){
+    if(pos[0] < 0){
+        pos[0] = Game.DIM_Y - pos[0];
     }
-    if(pos[1] <= 0){
-        pos[1] = Game.DIM_Y;
+    if(pos[1] < 0){
+        pos[1] = Game.DIM_X - pos[1];
     }
-    if(pos[0] >= Game.DIM_X){
+    if(pos[0] > Game.DIM_X){
         pos[0] = 0;
     }
-    if(pos[1] >= Game.DIM_Y){
+    if(pos[1] > Game.DIM_Y){
         pos[1] = 0;
     }
-}
+    return pos;
+};
+
+Game.prototype.wrap = function(pos){
+    if(pos[0] < 0){
+        pos[0] = Game.DIM_X - ((pos[0]%Game.DIM_X));
+    }
+    else if(pos[1] < 0){
+        pos[1] = Game.DIM_Y - ((pos[1] % Game.DIM_Y));
+    }
+    else if(pos[0] > Game.DIM_X){
+        pos[0] = pos[0]%Game.DIM_X;
+    }
+    else if(pos[1] > Game.DIM_Y){
+        pos[1] = pos[1]%Game.DIM_Y;
+    }
+    return pos;
+};
+
+Game.prototype.isOutOfBounds = function(pos){
+    return ( ((pos[0] < 0) ||  (pos[1] < 0)) || ((pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y)) );
+};
+
+Game.prototype.wrap2 = function(pos){
+    return [ Utils.wrap(pos[0], Game.DIM_X), Utils.wrap(pos[1], Game.DIM_Y)];
+};
 
 Game.DIM_X = 1000;
 Game.DIM_Y  = 600;
