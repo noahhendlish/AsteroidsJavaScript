@@ -13,9 +13,10 @@ Game.prototype.randomPosition = function(radius){
     return [Math.floor(Math.random()*(Game.DIM_X - radius)), Math.floor(Math.random()*(Game.DIM_Y - radius))];
 };
 
-Game.prototype.addAsteroid = function(){
-    let game = this;
-    let a = new Asteroid({game: game});
+Game.prototype.addAsteroid = function(options){
+    options = options || {};
+    options.game = this;
+    let a = new Asteroid(options);
     this.asteroids.push(a);
 };
 
@@ -64,16 +65,25 @@ Game.prototype.checkCollisions = function(){
         this.checkForCollision(this.asteroids[astIdx]);
     }
 };
+Game.prototype.split = function(object){
+    this.addAsteroid({radius: object.radius/2, pos: [object.pos[0] + object.radius*object.vel[0] , object.pos[1]+object.radius*object.vel[1]]});
+    this.addAsteroid({radius: object.radius/2, pos: [object.pos[0] + object.radius*-1*object.vel[0] , object.pos[1]+object.radius*-1*object.vel[1]]});
+}
 
 Game.prototype.checkForCollision = function(object){ //for asteroids
     for(let astIdx = 0; astIdx <= this.asteroids.length-1; astIdx++){
         if(object !== this.asteroids[astIdx]){
             if(this.asteroids[astIdx].isCollidedWith(object)){
+                    let ast1 = this.asteroids[astIdx];
+                    let ast2 = object;
                     this.asteroids[astIdx].collideWith(object);
-                    //console.log("COLLISION!");
-                    //console.log(this.asteroids[astIdx]);
-                    //console.log(object);
-                    //alert("Collision");
+                    /*if(ast1.radius > Asteroid.MIN_RADIUS){
+                        //this.split(ast1);
+                    }*/
+
+                    /*if(ast2.radius > Asteroid.MIN_RADIUS){
+                        //this.split(ast2);
+                    }*/
                     break;
             }
         }

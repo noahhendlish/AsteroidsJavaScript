@@ -10,13 +10,15 @@ function Asteroid(options){
     options.color  = options.color || Util.randRGB();
     options.pos = options.pos || randomPos();
     options.radius = options.radius || Asteroid.RADIUS;
-    options.vel = options.vel || Util.randomVec((Math.random()+0.25)*2);
+    options.vel = options.vel || Util.randomVec((Math.random()+0.25)*3);
     //options.game = options.game;
     MovingObject.call(this, options);
 }
 
+
 Util.inherits(Asteroid, MovingObject);
 Asteroid.COLOR = 'red';
-Asteroid.RADIUS = 20;
+Asteroid.RADIUS = 30;
+Asteroid.MIN_RADIUS = 15;
 
 module.exports = Asteroid;
