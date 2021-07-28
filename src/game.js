@@ -1,11 +1,19 @@
 const Asteroid = require("./asteroid");
 const MovingObject = require('./moving_object');
 const Util = require('./util');
+const Ship = require('./ship');
 
 function Game(asteroids, ship){
     this.asteroids = asteroids || [];
-    this.ship = ship || null;
+    this.ship = ship || this.newShip();
     this.addAsteroids();
+}
+Game.prototype.allObjects = function(){
+    return this.asteroids.concat([this.ship]);
+}
+
+Game.prototype.newShip = function(){
+    return new Ship({game: this});
 }
 
 Game.prototype.randomPosition = function(radius){
@@ -29,10 +37,16 @@ Game.prototype.addAsteroids = function addAsteroids(){
 Game.prototype.draw = function(ctx){
     ctx.clearRect(0,0,Game.DIM_X,Game.DIM_Y);
     this.asteroids.forEach((a)=>{a.draw(ctx);});
+    this.ship.draw(ctx);
 };
 
 Game.prototype.moveObjects = function(){
-    this.asteroids.forEach((a)=> a.move());
+    let x = Math.random()*10;
+    if(x % 2 !== 0){
+
+        //console.log(this.ship);
+    }
+    this.allObjects().forEach((obj) => obj.move());
 };
 
 Game.prototype.step = function(){
@@ -61,35 +75,43 @@ Game.prototype.isOutOfBounds = function(pos){
 };
 
 Game.prototype.checkCollisions = function(){
-    for(let astIdx = 0; astIdx <= this.asteroids.length-1; astIdx++){
-        this.checkForCollision(this.asteroids[astIdx]);
+    //Game.prototype.checkCollisions
+    //check collisions for all objects (asteroids with ship)
+    let objects = this.allObjects();
+    for(let objIdx = 0; objIdx <= objects.length-1; objIdx++){
+        this.checkForCollision(objects[objIdx]);
     }
 };
-Game.prototype.split = function(object){
-    this.addAsteroid({radius: object.radius/2, pos: [object.pos[0] + object.radius*object.vel[0] , object.pos[1]+object.radius*object.vel[1]]});
-    this.addAsteroid({radius: object.radius/2, pos: [object.pos[0] + object.radius*-1*object.vel[0] , object.pos[1]+object.radius*-1*object.vel[1]]});
+
+Game.prototype.splitAsteroid = function(asteroid){
+    if(asteroid.radius > Asteroid.MIN_RADIUS){
+        this.addAsteroid({radius: asteroid.radius/2, pos: [asteroid.pos[0] + asteroid.radius*asteroid.vel[0] , asteroid.pos[1]+asteroid.radius*asteroid.vel[1]]});
+        this.addAsteroid({radius: asteroid.radius/2, pos: [asteroid.pos[0] + asteroid.radius*-1*asteroid.vel[0] , asteroid.pos[1]+asteroid.radius*-1*asteroid.vel[1]]});
+    }
 }
 
 Game.prototype.checkForCollision = function(object){ //for asteroids
-    for(let astIdx = 0; astIdx <= this.asteroids.length-1; astIdx++){
-        if(object !== this.asteroids[astIdx]){
-            if(this.asteroids[astIdx].isCollidedWith(object)){
-                    let ast1 = this.asteroids[astIdx];
-                    let ast2 = object;
-                    this.asteroids[astIdx].collideWith(object);
-                    /*if(ast1.radius > Asteroid.MIN_RADIUS){
-                        //this.split(ast1);
-                    }*/
-
-                    /*if(ast2.radius > Asteroid.MIN_RADIUS){
-                        //this.split(ast2);
-                    }*/
+    let allObjs = this.allObjects();
+    for(let objectIdx = 0; objectIdx <= allObjs.length-1; objectIdx++){
+        if(object !== allObjs[objectIdx]){
+            if(allObjs[objectIdx].isCollidedWith(object)){
+                    allObjs[objectIdx].collideWith(object);
+                    //if both are asteroids
+                    if(allObjs[objectIdx] instanceof Asteroid && object instanceof Asteroid){
+                        let ast1 = allObjs[objectIdx];
+                        let ast2 = object;
+                        //remove asteroids?
+                        //split asteroids?
+                        //this.splitAsteroid(ast1);
+                        //this.splitAsteroid(ast2);
+                    }
                     break;
             }
         }
     }
 };
-Game.prototype.remove = function(object){
+
+Game.prototype.removeAsteroid = function(object){
     for( let i = 0; i <= this.asteroids.length-1; i++){
         if (this.asteroids[i] === object) {
             this.asteroids.splice(i, 1);

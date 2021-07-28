@@ -9,6 +9,24 @@ function MovingObject(options){
     this.game = options.game;
 }
 
+MovingObject.prototype.drawShip2 = function(ctx){
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.moveTo(this.pos[0] + 7.5*this.radius, this.pos[1]+ 3*this.radius);
+    ctx.lineTo(this.pos[0]+ 10*this.radius, this.pos[1] + 7.5*this.radius);
+    ctx.lineTo(this.pos[0] + 10*this.radius, this.pos[1] + 2.5*this.radius);
+    ctx.fill();
+}
+
+MovingObject.prototype.drawShip = function(ctx){
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.moveTo(this.pos[0] - this.radius, this.pos[1] - this.radius);
+    ctx.lineTo(this.pos[0] + this.radius, this.pos[1] - this.radius);
+    ctx.lineTo(this.pos[0], this.pos[1]+ 3*this.radius);
+    ctx.fill();
+}
+
 MovingObject.prototype.draw = function(ctx){
         ctx.fillStyle = this.color;
         ctx.beginPath();
@@ -38,8 +56,8 @@ MovingObject.prototype.isCollidedWith = function(otherObject){
 };
 
 MovingObject.prototype.collideWith = function(otherObject){
-    this.game.remove(otherObject);
-    this.game.remove(this);
+    //this.game.removeAsteroid(otherObject);
+    //this.game.remove(this);
 };
 
 module.exports = MovingObject;

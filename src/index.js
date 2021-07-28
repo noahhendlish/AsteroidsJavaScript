@@ -3,6 +3,7 @@
 //const Util = require('./utils');
 const Game = require('./game');
 const GameView = require('./game_view');
+//const Ship = require('./ship');
 
 //window.MovingObject = MovingObject;
 //window.Asteroid = Asteroid;
