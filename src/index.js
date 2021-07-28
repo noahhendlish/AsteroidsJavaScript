@@ -1,6 +1,6 @@
 //const MovingObject = require('./moving_object');
 //const Asteroid = require("./asteroid");
-//const Utils = require('./utils');
+//const Util = require('./utils');
 const Game = require('./game');
 const GameView = require('./game_view');
 

@@ -1,5 +1,5 @@
 
-const Utils = require('./utils');
+const Util = require('./util');
 
 function MovingObject(options){
     this.pos = options.pos;
@@ -22,16 +22,24 @@ MovingObject.prototype.draw = function(ctx){
             );
         ctx.fill();
 };
-const NORMAL_FRAME_TIME_DELTA = 1000/60;
 
-MovingObject.prototype.move = function(timeDelta = (1000/60)){
-    const velocityScale = 1;//timeDelta / NORMAL_FRAME_TIME_DELTA;
-    const offsetX = this.vel[0]*velocityScale;
-    const offsetY = this.vel[1]*velocityScale;
+
+MovingObject.prototype.move = function(){
+    const offsetX = this.vel[0];
+    const offsetY = this.vel[1];
     this.pos = [ this.pos[0] + offsetX, this.pos[1] + offsetY];
     if(this.game.isOutOfBounds(this.pos)){
         this.pos = this.game.wrap(this.pos);
     }
-}
+};
+
+MovingObject.prototype.isCollidedWith = function(otherObject){
+    return (Util.distBetweenTwoPositions(this.pos, otherObject.pos) < (this.radius+otherObject.radius));
+};
+
+MovingObject.prototype.collideWith = function(otherObject){
+    this.game.remove(otherObject);
+    this.game.remove(this);
+};
 
 module.exports = MovingObject;
