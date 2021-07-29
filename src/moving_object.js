@@ -9,7 +9,6 @@ function MovingObject(options){
     this.game = options.game;
 }
 
-
 MovingObject.prototype.isWrappable = true
 
 MovingObject.prototype.draw = function(ctx){
@@ -25,7 +24,6 @@ MovingObject.prototype.draw = function(ctx){
             );
         ctx.fill();
 };
-
 
 MovingObject.prototype.move = function(){
     const offsetX = this.vel[0];
@@ -46,9 +44,10 @@ MovingObject.prototype.isCollidedWith = function(otherObject){
 };
 
 MovingObject.prototype.collideWith = function(otherObject){
-    //this.game.removeAsteroid(otherObject);
-    //this.game.remove(this);
+    //leave empty, overwritten by asteroid, but called on other moving objects
 };
+
+module.exports = MovingObject;
 
 /*MovingObject.prototype.drawShip2 = function(ctx){
     ctx.fillStyle = this.color;
@@ -67,5 +66,3 @@ MovingObject.prototype.drawShip = function(ctx){
     ctx.lineTo(this.pos[0], this.pos[1]+ 3*this.radius);
     ctx.fill();
 }*/
-
-module.exports = MovingObject;

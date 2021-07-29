@@ -4,8 +4,6 @@ function Bullet(options){
     options = options || {};
     options.color  = options.color || Bullet.COLOR;
     options.radius = options.radius || Bullet.RADIUS;
-    //options.pos = options.pos;
-    //options.vel = options.vel;
     MovingObject.call(this, options);
 }
 Util.inherits(Bullet, MovingObject);

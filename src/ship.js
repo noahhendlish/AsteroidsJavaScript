@@ -13,20 +13,18 @@ function Ship(options){
 Util.inherits(Ship, MovingObject);
 
 Ship.prototype.relocate = function relocate(){
-    this.pos = this.game.randomPosition();
+    this.pos = Util.randomPos(this.radius);
     this.vel = [0,0];
 };
 
 Ship.prototype.fireBullet = function fireBullet(){
     const norm = Util.norm(this.vel);
+    //do not fire if ship is not moving
     if(norm===0){
         return;
     }
     const bullet = new Bullet({game: this.game, pos: this.pos, vel: [this.vel[0]*2, this.vel[1]*2]});
     this.game.add(bullet);
-    //console.log("firing");
-    //console.log(this.game.bullets);
-    //console.log(this.game.bullets);
 };
 
 Ship.prototype.power = function power(impulse){
@@ -36,13 +34,10 @@ Ship.prototype.power = function power(impulse){
     if(this.vel[1] <= Ship.MAX_V){
         this.vel[1]+= impulse[1];
     }
-    if(vel[0] +vel[1]==0){
-        vel+=impulse;
-    }
-    //this.vel += [impulse[0]*2, impulse[1]*2];
+    this.vel = [impulse[0]*2, impulse[1]*2];
 };
 
-Ship.MAX_V = 5;
-Ship.SIZE = 10; //radius?
+Ship.MAX_V = 3;
+Ship.SIZE = 10; //alias for radius
 Ship.COLOR = 'black';
 module.exports = Ship;
