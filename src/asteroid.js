@@ -7,7 +7,7 @@ function Asteroid(options){
     options = options || {};
     options.color  = options.color || Util.randRGB();
     options.radius = options.radius || Asteroid.RADIUS;
-    options.pos = options.pos || Util.randomPos(this.radius);
+    options.pos = options.pos || Util.randomPos(options.radius);
     options.vel = options.vel || Util.randomVec((Math.random()+0.25)*3);
     MovingObject.call(this, options);
 }
