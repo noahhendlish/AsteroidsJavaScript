@@ -48,6 +48,9 @@ const Util = {
     //calculate norm (magnitude or length)
     norm(velocity){
         return this.distBetweenTwoPositions([0,0], velocity);
+    },
+    fiftyPercentChance(){
+        return ((Math.random()*10) % 2) !== 0
     }
 };
 module.exports = Util;

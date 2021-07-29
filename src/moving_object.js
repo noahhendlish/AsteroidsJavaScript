@@ -25,10 +25,11 @@ MovingObject.prototype.draw = function(ctx){
         ctx.fill();
 };
 
-MovingObject.prototype.move = function(){
-    const offsetX = this.vel[0];
-    const offsetY = this.vel[1];
-    this.pos = [ this.pos[0] + offsetX, this.pos[1] + offsetY];
+MovingObject.prototype.move = function(deltaTime){
+    deltaTime = deltaTime || 1;
+    const deltaX = this.vel[0]*deltaTime;
+    const deltaY = this.vel[1]*deltaTime;
+    this.pos = [ this.pos[0] + deltaX, this.pos[1] + deltaY];
     if(this.game.isOutOfBounds(this.pos)){
         if(this.isWrappable){
             this.pos = this.game.wrap(this.pos);

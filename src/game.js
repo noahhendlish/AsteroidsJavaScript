@@ -78,11 +78,9 @@ Game.prototype.draw = function(ctx){
     //this.ship.drawShip(ctx);
 };
 
-Game.prototype.moveObjects = function(){
-    let x = Math.random()*10;
-    if(x % 2 !== 0){
-    }
-    this.allObjects().forEach((obj) => obj.move());
+Game.prototype.moveObjects = function(deltaTime){
+    deltaTime = deltaTime || 1;
+    this.allObjects().forEach((obj) => obj.move(deltaTime));
 };
 
 Game.prototype.step = function(){
