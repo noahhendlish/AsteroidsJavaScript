@@ -21,21 +21,34 @@ GameView.MOVES = {
 
 GameView.prototype.start = function(){
     let that = this;
+    that.bindKeyHandlers();
     setInterval(function(){
-        that.bindKeyHandlers();
         that.game.draw(that.ctx);
         that.game.step();
     }, 20);
 };
 
 GameView.prototype.bindKeyHandlers = function(){
-    let that = this;
+    let ship = this.ship;
+    let bullets = this.game.bullets;
     Object.keys(GameView.MOVES).forEach((k)=>{
         key(k, function(){
-            console.log(k, GameView.MOVES[k]);
-            that.ship.power(GameView.MOVES[k]);
+            ship.power(GameView.MOVES[k]);
         });
     });
+    key('space', ()=>{
+        ship.fireBullet();
+    });
+
+
+    if (key.isPressed('space')){
+        return false;
+        fired = setTimeout(()=>{
+            return false
+        }, 2000);
+    }
+
+
 };
 
 module.exports = GameView;
