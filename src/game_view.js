@@ -24,11 +24,12 @@ GameView.prototype.bindKeyHandlers = function(){
     let that = this;
     Object.keys(GameView.KEY_MOVES).forEach(function(k){
         key(k, ()=>{
-            ship.power(GameView.KEY_MOVES[k]);
-        });
-        if(key.isPressed(k)){
+            //ship.power(GameView.KEY_MOVES[k]);
             ship.powerChangeDir(GameView.KEY_MOVES[k]);
-        }
+        });
+        /*if(key.isPressed(k)){
+            ship.powerChangeDir(GameView.KEY_MOVES[k]);
+        }*/
     });
     key('space', ()=>{
             that.limitFiredBullets()

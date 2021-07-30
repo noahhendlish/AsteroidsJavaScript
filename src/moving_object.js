@@ -9,7 +9,7 @@ function MovingObject(options){
     this.game = options.game;
 }
 
-MovingObject.prototype.isWrappable = true
+MovingObject.prototype.isWrappable = true;
 
 MovingObject.prototype.draw = function(ctx){
         ctx.fillStyle = this.color;
