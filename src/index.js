@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
     canvas.height = Game.DIM_Y;
     const ctx = canvas.getContext('2d');
     const game = new Game();
-    const gameView = new GameView(ctx, game);
+    const gameView = new GameView(ctx, game, 'split');
     gameView.start();
 
 });

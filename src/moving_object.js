@@ -49,21 +49,3 @@ MovingObject.prototype.collideWith = function(otherObject){
 };
 
 module.exports = MovingObject;
-
-/*MovingObject.prototype.drawShip2 = function(ctx){
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.moveTo(this.pos[0] + 7.5*this.radius, this.pos[1]+ 3*this.radius);
-    ctx.lineTo(this.pos[0]+ 10*this.radius, this.pos[1] + 7.5*this.radius);
-    ctx.lineTo(this.pos[0] + 10*this.radius, this.pos[1] + 2.5*this.radius);
-    ctx.fill();
-}
-
-MovingObject.prototype.drawShip = function(ctx){
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.moveTo(this.pos[0] - this.radius, this.pos[1] - this.radius);
-    ctx.lineTo(this.pos[0] + this.radius, this.pos[1] - this.radius);
-    ctx.lineTo(this.pos[0], this.pos[1]+ 3*this.radius);
-    ctx.fill();
-}*/

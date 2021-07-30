@@ -1,13 +1,15 @@
 const Game = require("./game");
 
-function GameView(ctx, game){
+function GameView(ctx, game, playMode){
     this.ctx = ctx;
     this.game = game || new Game();
     this.ship = this.game.ship || this.game.newShip();
     this.lastTime = 0;
     this.firedBullet = false;
+    this.playMode = playMode || 'infinite';
 }
 GameView.MAX_FIRE_RATE = 300; //max rate (in ms) ship can fire bullets
+
 //directions for objects
 GameView.KEY_MOVES = {
     up: [0, -1],
@@ -24,11 +26,15 @@ GameView.prototype.bindKeyHandlers = function(){
         key(k, ()=>{
             ship.power(GameView.KEY_MOVES[k]);
         });
+        if(key.isPressed(k)){
+            ship.powerChangeDir(GameView.KEY_MOVES[k]);
+        }
     });
     key('space', ()=>{
             that.limitFiredBullets()
     });
 };
+
 GameView.prototype.limitFiredBullets = function(){
     //limit firing of bullets
     if (this.firedBullet === false){
@@ -40,12 +46,21 @@ GameView.prototype.limitFiredBullets = function(){
     }
 }
 
+GameView.prototype.infinitePlay = function(){
+    if(this.game.asteroids.length === 0){
+        this.game.addAsteroids();
+    }
+}
+
 GameView.prototype.animate = function(currTime){
     this.currTime = currTime;
     let deltaTime = currTime-this.lastTime;
     this.game.step(deltaTime);
     this.game.draw(this.ctx);
     this.lastTime = currTime;
+    if(this.playMode == 'infinite'){
+        this.infinitePlay();
+    }
     //continue animating (passing requestAnimationFrame this)
     requestAnimationFrame(this.animate.bind(this));
 }

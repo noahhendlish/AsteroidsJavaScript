@@ -7,6 +7,7 @@ function Game(asteroids, ship, bullets){
     this.ship = ship || this.newShip();
     this.bullets = bullets || [];
     this.addAsteroids();
+    this.splitAsteroidMode = false;
 }
 
 //returns array of all moving objects
@@ -126,16 +127,19 @@ Game.prototype.splitAsteroid = function(asteroid){ //split asteroid into two
 Game.prototype.checkForCollision = function(object){ //for given object, check if colliding with any object
     let allObjs = this.allObjects();
     for(let objectIdx = 0; objectIdx <= allObjs.length-1; objectIdx++){
-        if(object !== allObjs[objectIdx]){
-            if(allObjs[objectIdx].isCollidedWith(object)){
-                    allObjs[objectIdx].collideWith(object);
+        if(object !== allObjs[objectIdx]){ // skip if same object
+            if(allObjs[objectIdx].isCollidedWith(object)){ // check if collision
+                //if splitting asteroids uncomment
+                /*
                     //if both are asteroids
-                    //if(allObjs[objectIdx] instanceof Asteroid && object instanceof Asteroid){
+                    if(allObjs[objectIdx] instanceof Asteroid && object instanceof Asteroid){
                         //split asteroids
-                        //this.splitAsteroid(allObjs[objectIdx]);
-                        //this.splitAsteroid(object);
-                    //}
-                    break;
+                        this.splitAsteroid(allObjs[objectIdx]);
+                        this.splitAsteroid(object);
+                    }
+                }*/
+                allObjs[objectIdx].collideWith(object); //resolve collision
+                break;
             }
         }
     }
@@ -159,7 +163,8 @@ Game.prototype.removeAsteroid = function(asteroid){
 
 Game.DIM_X = 1000;
 Game.DIM_Y  = 600;
-Game.NUM_ASTEROIDS = 5;
+Game.NUM_ASTEROIDS = 10;
+Game.ASTEROID_SPLIT = false;
 module.exports = Game;
 
 
